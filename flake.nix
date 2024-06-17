@@ -114,5 +114,13 @@
         lem = lem-exec "sdl2";
         default = lem;
       };
-    });
+    })
+    // {
+      overlays = rec {
+        default = lem;
+        lem = final: prev: {
+          dvd-zig = self.packages."${final.system}".lem;
+        };
+      };
+    };
 }
