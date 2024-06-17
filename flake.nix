@@ -111,7 +111,8 @@
     in {
       packages = {
         inherit lem-exec;
-        lem = lem-exec "sdl2";
+        lem-sdl2 = lem-exec "sdl2";
+        lem-ncurses = lem-exec "ncurses";
         default = lem;
       };
     })
@@ -119,7 +120,8 @@
       overlays = rec {
         default = lem;
         lem = final: prev: {
-          dvd-zig = self.packages."${final.system}".lem;
+          lem-sdl2 = self.packages."${final.system}".lem-sdl2;
+          lem-ncurses = self.packages."${final.system}".lem-ncurses;
         };
       };
     };
