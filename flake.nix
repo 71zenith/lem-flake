@@ -25,6 +25,12 @@
         patches = [./micros.patch];
       };
       jsonrpc = pkgs.sbclPackages.jsonrpc.overrideLispAttrs (oldAttrs: {
+        src = pkgs.fetchFromGitHub {
+          owner = "cxxxr";
+          repo = "jsonrpc";
+          rev = "6e3d23f9bec1af1a3155c21cc05dad9d856754bc";
+          hash = "sha256-QbXesQbHHrDtcV2D4FTnKMacEYZJb2mRBIMC7hZM/A8=";
+        };
         systems = ["jsonrpc" "jsonrpc/transport/stdio" "jsonrpc/transport/tcp"];
         lispLibs = with pkgs.sbclPackages;
           oldAttrs.lispLibs ++ [cl_plus_ssl quri fast-io trivial-utf-8];
