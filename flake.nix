@@ -56,16 +56,16 @@
           rev = "bcc052d4f9161cba5ece9896dc76f46adadae23f";
           hash = "sha256-qHSBM2FXA5PNmckbIJxQE6aTVUz3moyIC3dXvNRJaMY=";
         };
-        lispLibs = [self.packages.lem];
+        lispLibs = [lem];
       };
       lem = pkgs.callPackage ./default.nix {inherit micros lem-mailbox jsonrpc cl-charms queues lem;};
       lem-exec = frontend:
         pkgs.sbcl.buildASDFSystem {
-          inherit (self.packages.lem) src;
+          inherit (lem) src;
           pname = "lem-exec";
           version = "latest";
           lispLibs =
-            [self.packages.lem self.packages.lem-base16-themes jsonrpc cl-charms]
+            [lem lem-base16-themes jsonrpc cl-charms]
             ++ (with pkgs.sbcl.pkgs; [_3bmd _3bmd-ext-code-blocks lisp-preprocessor trivial-ws trivial-open-browser])
             ++ (
               if frontend == "sdl2"
@@ -104,16 +104,16 @@
           passthru = {
             withPackages = import ./wrapper.nix {
               inherit (pkgs) makeWrapper sbcl lib symlinkJoin;
-              lem = self.packages.lem-exec frontend;
+              lem = lem-exec frontend;
             };
           };
         };
     in {
-      packages = {
-        inherit lem-exec;
+      packages = rec {
+        inherit lem-exec lem lem-base16-themes;
         lem-sdl2 = lem-exec "sdl2";
         lem-ncurses = lem-exec "ncurses";
-        default = lem;
+        default = lem-sdl2;
       };
     })
     // {
